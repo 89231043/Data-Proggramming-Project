@@ -1,0 +1,234 @@
+---
+title: "Data Programming "
+subtitle: "Project"
+author: "Tamara Gjorgjeska"
+date: "`r format(Sys.time(), '%e %B %Y')`"
+output:
+  html_document:
+  embed_resources: true
+execute:
+  warning: false
+messages: false
+echo: true
+error: true
+bibliography: bibliography.bib
+---
+library(tidyverse)
+
+
+### ***Video Game Sales Dataset Overview***
+
+This dataset provides insights into the sales performance of video games across different platforms, genres, and regions. Each entry in the dataset represents a specific video game title and includes the following attributes:
+
+<span style="color: green;"><b>Release Date and Popularity</b></span>: The dataset includes the release dates of the tracks, providing a historical perspective on the evolution of Taylor Swift's music. Additionally, the popularity score quantifies each track's reception and impact among listeners.
+
+<span style="color: green;"><b>Musical Characteristics</b></span>: Detailed musical attributes such as danceability, valence, energy, and loudness offer a nuanced understanding of the mood, vibe, and sonic qualities of each track. These metrics illuminate the stylistic diversity within Taylor Swift's repertoire, spanning from lively and energetic compositions to introspective and emotive pieces.
+
+<span style="color: green;"><b>Genre and Mood</b></span>: The genre classification sheds light on the stylistic influences and sonic landscapes explored by Taylor Swift across her tracks. Furthermore, valence and energy metrics provide insights into the emotional and energetic dimensions of each song, enriching our understanding of the thematic and tonal elements present in her music.
+
+<span style="color: green;"><b>Instrumentation and Vocal Presence</b></span>: The instrumentalness metric measures the prominence of instrumental elements in a track, offering insights into Taylor Swift's compositional approach and sonic palette. Similarly, the presence of spoken words (speechiness) and vocal characteristics provide valuable context regarding the lyrical content and vocal delivery present in her songs.
+
+<span style="color: green;"><b>Structural Elements</b></span>: Attributes such as key, tempo, mode, duration, and time signature offer insights into the musical composition and arrangement of Taylor Swift's tracks, highlighting variations in tonality, rhythm, and form across her discography.[@videogameseurope]
+
+
+This dataset enables analysis of the popularity and success factors of video games in the market. It can be used to identify trends, patterns, and correlations between various attributes and sales performance.[@vgchartz]
+
+```{r}
+dfgame <- read.csv("C:/Users/Gjorgjeski/OneDrive/Desktop/games.csv")
+head(dfgame)
+names(dfgame)
+unique(dfgame$Genre)
+str(dfgame)
+colnames(dfgame)
+missing<-!complete.cases(dfgame)
+dfgame[missing,]
+library(tibble)
+df_tibble <- as_tibble(dfgame)
+df_tibble
+
+```
+# If the Publisher is Nintendo show the year and name of the game
+```{r}
+Nintendo <- dfgame[dfgame$Publisher == "Nintendo", c("Name","Year")]
+head(Nintendo)
+
+```
+# Filter games with "Mario" in their name
+```{r}
+library(dplyr)
+mario_games <- filter(dfgame, grepl("Mario", Name, ignore.case = TRUE))
+
+mario_games$Name
+```
+# Show games that have numbers in their name
+```{r}
+games_with_numbers <- dfgame[grep("[0-9]", dfgame$Name), "Name"]
+head(games_with_numbers, 30)
+
+```
+# Filter games tha were created in year 2007
+```{r}
+games_2007 <- dfgame %>%
+  filter(Year == 2007)
+cat("Games that were created in 2007 were:", games_2007$Name)
+
+```
+# Create new column with initials of game names
+```{r}
+library(stringr)
+
+dfgame$Initials_Of_Games <- sapply(str_extract_all(dfgame$Name, "[A-Z]"), function(x) paste0(substr(x, 1, 1), collapse = "."))
+
+dfgame <- dfgame[, c(1:which(names(dfgame) == "Name"), 
+             which(names(dfgame) == "Initials_Of _games"), 
+             (which(names(dfgame) == "Name") + 1):ncol(dfgame))]
+
+head(dfgame)
+```
+
+# Find min,max,range,mean, median of column Global_Sales
+```{r}
+min(dfgame$Global_Sales)
+max(dfgame$Global_Sales)
+range(dfgame$Global_Sales)
+mean(dfgame$Global_Sales)
+median(dfgame$Global_Sales)
+var(dfgame$Global_Sales) 
+summary(dfgame$Global_Sales)
+```
+# Calculate the number of nintendo games
+```{r}
+nintendo_games <- dfgame[dfgame$Publisher == "Nintendo", ]
+number_of_nintendo_games <- nrow(nintendo_games)
+print(number_of_nintendo_games)
+
+```
+# The difference between the oldest and newest game
+```{r}
+class(dfgame$Year)
+dfgame$Year <- as.numeric(dfgame$Year)
+oldest_year <- min(dfgame$Year, na.rm = TRUE)
+newest_year <- max(dfgame$Year, na.rm = TRUE)
+year_difference <- newest_year - oldest_year
+cat("The difference between the oldest and newest years is:", year_difference, "\n")
+
+```
+# Years passed since release of the games
+```{r}
+library(dplyr)
+
+dfgame <- dfgame %>%
+  mutate(Years_Passed = as.numeric(format(Sys.Date(), "%Y")) - as.numeric(Year))
+
+head(dfgame)
+
+ 
+```
+# Total global sales by platform
+```{r}
+platforms <- dfgame %>%
+  group_by(Platform) %>%
+  summarise(Total_Global_Sales = sum(Global_Sales))
+platforms
+
+```
+# Histogram of column global sales by year
+```{r}
+library(ggplot2)
+dfgame$Year <- as.factor(dfgame$Year)
+
+ggplot(dfgame, aes(x = Year, y = Global_Sales)) +
+  geom_histogram(stat = "identity", fill = "skyblue", color = "palevioletred") +
+  labs(title = "Global Sales by Year",
+       x = "Year",
+       y = "Global Sales") +
+  theme_minimal()
+
+```
+# Pi chart
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+sales_summary <- dfgame %>%
+  summarise(
+    NA_Sales = sum(NA_Sales, na.rm = TRUE),
+    EU_Sales = sum(EU_Sales, na.rm = TRUE),
+    JP_Sales = sum(JP_Sales, na.rm = TRUE),
+    Other_Sales = sum(Other_Sales, na.rm = TRUE)
+  )
+
+sales_long <- sales_summary %>%
+  pivot_longer(cols = everything(), names_to = "Region", values_to = "Sales")
+
+ggplot(sales_long, aes(x = "", y = Sales, fill = Region)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar(theta = "y", start = 0.2) +
+  scale_fill_manual(values = c("NA_Sales" = "skyblue", "EU_Sales" = "seagreen", "JP_Sales" = "maroon", "Other_Sales" = "khaki")) +
+  labs(title = "Sales Distribution by Region", x = "", y = "") +
+  theme(
+    plot.title = element_text(size = 30, hjust = 0.5),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank(),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 16, face = "bold")
+  )
+
+```
+# Filter games that with global sales between 10-50
+```{r}
+filtered_games <- dfgame %>%
+  filter(Global_Sales >= 10 & Global_Sales <= 50) %>%
+  select(Name, Global_Sales)
+
+filtered_games
+
+```
+# Calculate in what year were created the most games 
+```{r}
+library(dplyr)
+
+games_per_year <- dfgame %>%
+  group_by(Year) %>%
+  summarise(count = n())
+
+max_games_year <- games_per_year %>%
+  filter(count == max(count))
+
+most_games_year <- paste("In year", max_games_year$Year, "were created the most games with", max_games_year$count, "games.")
+most_games_year
+```
+# Visualizing NA_sales over the years
+```{r}
+ggplot(dfgame, aes(x = Year, y = NA_Sales)) +
+  geom_line(color = "darkgreen") +
+  labs(title = "NA Sales Trend Over Years",
+       x = "Year",
+       y = "NA Sales (millions)") +
+  theme_minimal()
+
+```
+
+# Boxplot of Global sales by Genre
+```{r}
+ggplot(dfgame, aes(x = Genre, y = Global_Sales)) +
+  geom_boxplot(fill = "lightgreen", color = "purple") +
+  labs(title = "Boxplot of Global Sales by Genre", x = "Genre", y = "Global Sales")
+
+```
+
+
+# ***Interpretation / Conclusion***
+
+This analysis reveals that:\n
+
+**1.**Nintendo consistently publishes successful games, highlighting its significant role in the gaming industry.\n
+
+**2.**Mario games maintain enduring popularity, significantly contributing to overall sales.\n
+
+**3.**Global sales trends showcase market preferences and the dominance of top publishers, with detailed insights into regional sales distributions and genre performances.\n
+
+# References
+
