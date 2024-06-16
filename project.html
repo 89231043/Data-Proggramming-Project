@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tamara Gjorgjeska">
+<meta name="dcterms.date" content="2024-06-16">
+
+<title>Data Programming</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="project_files/libs/clipboard/clipboard.min.js"></script>
+<script src="project_files/libs/quarto-html/quarto.js"></script>
+<script src="project_files/libs/quarto-html/popper.min.js"></script>
+<script src="project_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="project_files/libs/quarto-html/anchor.min.js"></script>
+<link href="project_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="project_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="project_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="project_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="project_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Programming</h1>
+<p class="subtitle lead">Project</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Tamara Gjorgjeska </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 16, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>library(tidyverse)</p>
+<section id="video-game-sales-dataset-overview" class="level3">
+<h3 class="anchored" data-anchor-id="video-game-sales-dataset-overview"><strong><em>Video Game Sales Dataset Overview</em></strong></h3>
+<p>This dataset provides insights into the sales performance of video games across different platforms, genres, and regions. Each entry in the dataset represents a specific video game title and includes the following attributes:</p>
+<p><span style="color: green;"><b>Release Date and Popularity</b></span>: The dataset includes the release dates of the tracks, providing a historical perspective on the evolution of Taylor Swift’s music. Additionally, the popularity score quantifies each track’s reception and impact among listeners.</p>
+<p><span style="color: green;"><b>Musical Characteristics</b></span>: Detailed musical attributes such as danceability, valence, energy, and loudness offer a nuanced understanding of the mood, vibe, and sonic qualities of each track. These metrics illuminate the stylistic diversity within Taylor Swift’s repertoire, spanning from lively and energetic compositions to introspective and emotive pieces.</p>
+<p><span style="color: green;"><b>Genre and Mood</b></span>: The genre classification sheds light on the stylistic influences and sonic landscapes explored by Taylor Swift across her tracks. Furthermore, valence and energy metrics provide insights into the emotional and energetic dimensions of each song, enriching our understanding of the thematic and tonal elements present in her music.</p>
+<p><span style="color: green;"><b>Instrumentation and Vocal Presence</b></span>: The instrumentalness metric measures the prominence of instrumental elements in a track, offering insights into Taylor Swift’s compositional approach and sonic palette. Similarly, the presence of spoken words (speechiness) and vocal characteristics provide valuable context regarding the lyrical content and vocal delivery present in her songs.</p>
+<p><span style="color: green;"><b>Structural Elements</b></span>: Attributes such as key, tempo, mode, duration, and time signature offer insights into the musical composition and arrangement of Taylor Swift’s tracks, highlighting variations in tonality, rhythm, and form across her discography.<span class="citation" data-cites="videogameseurope">(<a href="#ref-videogameseurope" role="doc-biblioref">Europe 2024</a>)</span></p>
+<p>This dataset enables analysis of the popularity and success factors of video games in the market. It can be used to identify trends, patterns, and correlations between various attributes and sales performance.<span class="citation" data-cites="vgchartz">(<a href="#ref-vgchartz" role="doc-biblioref">VGChartz 2024</a>)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dfgame <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"C:/Users/Gjorgjeski/OneDrive/Desktop/games.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dfgame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Rank                     Name Platform Year        Genre Publisher NA_Sales
+1    1               Wii Sports      Wii 2006       Sports  Nintendo    41.49
+2    2        Super Mario Bros.      NES 1985     Platform  Nintendo    29.08
+3    3           Mario Kart Wii      Wii 2008       Racing  Nintendo    15.85
+4    4        Wii Sports Resort      Wii 2009       Sports  Nintendo    15.75
+5    5 Pokemon Red/Pokemon Blue       GB 1996 Role-Playing  Nintendo    11.27
+6    6                   Tetris       GB 1989       Puzzle  Nintendo    23.20
+  EU_Sales JP_Sales Other_Sales Global_Sales
+1    29.02     3.77        8.46        82.74
+2     3.58     6.81        0.77        40.24
+3    12.88     3.79        3.31        35.82
+4    11.01     3.28        2.96        33.00
+5     8.89    10.22        1.00        31.37
+6     2.26     4.22        0.58        30.26</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(dfgame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Rank"         "Name"         "Platform"     "Year"         "Genre"       
+ [6] "Publisher"    "NA_Sales"     "EU_Sales"     "JP_Sales"     "Other_Sales" 
+[11] "Global_Sales"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(dfgame<span class="sc">$</span>Genre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Sports"       "Platform"     "Racing"       "Role-Playing" "Puzzle"      
+ [6] "Misc"         "Shooter"      "Simulation"   "Action"       "Fighting"    
+[11] "Adventure"    "Strategy"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dfgame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   16598 obs. of  11 variables:
+ $ Rank        : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ Name        : chr  "Wii Sports" "Super Mario Bros." "Mario Kart Wii" "Wii Sports Resort" ...
+ $ Platform    : chr  "Wii" "NES" "Wii" "Wii" ...
+ $ Year        : chr  "2006" "1985" "2008" "2009" ...
+ $ Genre       : chr  "Sports" "Platform" "Racing" "Sports" ...
+ $ Publisher   : chr  "Nintendo" "Nintendo" "Nintendo" "Nintendo" ...
+ $ NA_Sales    : num  41.5 29.1 15.8 15.8 11.3 ...
+ $ EU_Sales    : num  29.02 3.58 12.88 11.01 8.89 ...
+ $ JP_Sales    : num  3.77 6.81 3.79 3.28 10.22 ...
+ $ Other_Sales : num  8.46 0.77 3.31 2.96 1 0.58 2.9 2.85 2.26 0.47 ...
+ $ Global_Sales: num  82.7 40.2 35.8 33 31.4 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dfgame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Rank"         "Name"         "Platform"     "Year"         "Genre"       
+ [6] "Publisher"    "NA_Sales"     "EU_Sales"     "JP_Sales"     "Other_Sales" 
+[11] "Global_Sales"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>missing<span class="ot">&lt;-</span><span class="sc">!</span><span class="fu">complete.cases</span>(dfgame)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dfgame[missing,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] Rank         Name         Platform     Year         Genre       
+ [6] Publisher    NA_Sales     EU_Sales     JP_Sales     Other_Sales 
+[11] Global_Sales
+&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df_tibble <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(dfgame)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df_tibble</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16,598 × 11
+    Rank Name          Platform Year  Genre Publisher NA_Sales EU_Sales JP_Sales
+   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1 Wii Sports    Wii      2006  Spor… Nintendo      41.5    29.0      3.77
+ 2     2 Super Mario … NES      1985  Plat… Nintendo      29.1     3.58     6.81
+ 3     3 Mario Kart W… Wii      2008  Raci… Nintendo      15.8    12.9      3.79
+ 4     4 Wii Sports R… Wii      2009  Spor… Nintendo      15.8    11.0      3.28
+ 5     5 Pokemon Red/… GB       1996  Role… Nintendo      11.3     8.89    10.2 
+ 6     6 Tetris        GB       1989  Puzz… Nintendo      23.2     2.26     4.22
+ 7     7 New Super Ma… DS       2006  Plat… Nintendo      11.4     9.23     6.5 
+ 8     8 Wii Play      Wii      2006  Misc  Nintendo      14.0     9.2      2.93
+ 9     9 New Super Ma… Wii      2009  Plat… Nintendo      14.6     7.06     4.7 
+10    10 Duck Hunt     NES      1984  Shoo… Nintendo      26.9     0.63     0.28
+# ℹ 16,588 more rows
+# ℹ 2 more variables: Other_Sales &lt;dbl&gt;, Global_Sales &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="if-the-publisher-is-nintendo-show-the-year-and-name-of-the-game" class="level1">
+<h1>If the Publisher is Nintendo show the year and name of the game</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Nintendo <span class="ot">&lt;-</span> dfgame[dfgame<span class="sc">$</span>Publisher <span class="sc">==</span> <span class="st">"Nintendo"</span>, <span class="fu">c</span>(<span class="st">"Name"</span>,<span class="st">"Year"</span>)]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Nintendo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      Name Year
+1               Wii Sports 2006
+2        Super Mario Bros. 1985
+3           Mario Kart Wii 2008
+4        Wii Sports Resort 2009
+5 Pokemon Red/Pokemon Blue 1996
+6                   Tetris 1989</code></pre>
+</div>
+</div>
+</section>
+<section id="filter-games-with-mario-in-their-name" class="level1">
+<h1>Filter games with “Mario” in their name</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>mario_games <span class="ot">&lt;-</span> <span class="fu">filter</span>(dfgame, <span class="fu">grepl</span>(<span class="st">"Mario"</span>, Name, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>mario_games<span class="sc">$</span>Name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "Super Mario Bros."                                   
+  [2] "Mario Kart Wii"                                      
+  [3] "New Super Mario Bros."                               
+  [4] "New Super Mario Bros. Wii"                           
+  [5] "Mario Kart DS"                                       
+  [6] "Super Mario World"                                   
+  [7] "Super Mario Land"                                    
+  [8] "Super Mario Bros. 3"                                 
+  [9] "Mario Kart 7"                                        
+ [10] "Super Mario 64"                                      
+ [11] "Super Mario Galaxy"                                  
+ [12] "Super Mario Land 2: 6 Golden Coins"                  
+ [13] "Super Mario 3D Land"                                 
+ [14] "Super Mario All-Stars"                               
+ [15] "Super Mario 64"                                      
+ [16] "Mario Kart 64"                                       
+ [17] "New Super Mario Bros. 2"                             
+ [18] "Mario Party DS"                                      
+ [19] "Super Mario Kart"                                    
+ [20] "Mario Party 8"                                       
+ [21] "Mario &amp; Sonic at the Olympic Games"                  
+ [22] "Super Mario Galaxy 2"                                
+ [23] "Super Mario Bros. 2"                                 
+ [24] "Mario Kart 8"                                        
+ [25] "Mario Kart: Double Dash!!"                           
+ [26] "Super Mario Sunshine"                                
+ [27] "Super Mario Advance"                                 
+ [28] "Mario Kart: Super Circuit"                           
+ [29] "Super Mario World"                                   
+ [30] "Dr. Mario"                                           
+ [31] "Super Mario Bros. 3"                                 
+ [32] "New Super Mario Bros. U"                             
+ [33] "Super Mario Land 3: Wario Land"                      
+ [34] "Mario &amp; Sonic at the Olympic Games"                  
+ [35] "Super Mario Bros."                                   
+ [36] "Dr. Mario"                                           
+ [37] "Mario &amp; Sonic at the Olympic Winter Games"           
+ [38] "Super Mario 3D World"                                
+ [39] "Super Mario World 2: Yoshi's Island"                 
+ [40] "Mario &amp; Luigi: Bowser's Inside Story"                
+ [41] "Mario &amp; Sonic at the London 2012 Olympic Games"      
+ [42] "Super Paper Mario"                                   
+ [43] "Mario &amp; Sonic at the Olympic Winter Games"           
+ [44] "Mario Party 9"                                       
+ [45] "Super Mario Maker"                                   
+ [46] "Super Mario World 2: Yoshi's Island"                 
+ [47] "Mario Paint"                                         
+ [48] "Mario Party"                                         
+ [49] "Mario vs. Donkey Kong: Mini-Land Mayhem!"            
+ [50] "Super Mario Bros.: The Lost Levels"                  
+ [51] "Mario Strikers Charged"                              
+ [52] "Super Mario All-Stars: Limited Edition"              
+ [53] "Mario Party 2"                                       
+ [54] "Mario Party 4"                                       
+ [55] "Mario Tennis"                                        
+ [56] "Mario Bros."                                         
+ [57] "Paper Mario: Sticker Star"                           
+ [58] "Paper Mario: The Thousand-Year Door"                 
+ [59] "Mario &amp; Luigi: Superstar Saga"                       
+ [60] "Super Mario RPG: Legend of the Seven Stars"          
+ [61] "Mario Sports Mix"                                    
+ [62] "Mario Party 5"                                       
+ [63] "Mario &amp; Luigi: Dream Team"                           
+ [64] "Mario Super Sluggers"                                
+ [65] "Mario Party 3"                                       
+ [66] "Mario Party: Island Tour"                            
+ [67] "Mario Party 6"                                       
+ [68] "Mario Hoops 3 on 3"                                  
+ [69] "Super Mario Strikers"                                
+ [70] "Mario Bros."                                         
+ [71] "Mario Party 7"                                       
+ [72] "Mario Party 10"                                      
+ [73] "Mario Golf: Toadstool Tour"                          
+ [74] "New Play Control! Mario Power Tennis"                
+ [75] "Mario Golf"                                          
+ [76] "Mario Superstar Baseball"                            
+ [77] "Classic NES Series: Super Mario Bros."               
+ [78] "Paper Mario"                                         
+ [79] "Mario &amp; Luigi: Partners in Time"                     
+ [80] "Mario Power Tennis"                                  
+ [81] "Mario vs. Donkey Kong 2: March of the Minis"         
+ [82] "Mario &amp; Sonic at the London 2012 Olympic Games"      
+ [83] "Mario Tennis"                                        
+ [84] "Mario vs. Donkey Kong"                               
+ [85] "Mario Party Advance"                                 
+ [86] "Mario Tennis Open"                                   
+ [87] "Mario &amp; Sonic at the Sochi 2014 Olympic Winter Games"
+ [88] "Mario &amp; Luigi: Paper Jam"                            
+ [89] "Mario Pinball Land"                                  
+ [90] "Mario's Picross"                                     
+ [91] "Classic NES Series: Dr. Mario"                       
+ [92] "Mario Tennis: Power Tour"                            
+ [93] "Mario &amp; Wario"                                       
+ [94] "Mario Golf: World Tour"                              
+ [95] "Dance Dance Revolution: Mario Mix"                   
+ [96] "Mario &amp; Sonic at the Rio 2016 Olympic Games"         
+ [97] "Puzzle &amp; Dragons Z + Super Mario Bros. Edition"      
+ [98] "Mario Tennis Ultra Smash"                            
+ [99] "Mario Golf: Advance Tour"                            
+[100] "Famicom Mini: Super Mario Bros. 2"                   
+[101] "Dr. Mario 64"                                        
+[102] "Mario no Super Picross"                              
+[103] "Dr. Mario / Puzzle League"                           
+[104] "Mario Golf"                                          
+[105] "Mario &amp; Sonic at the Rio 2016 Olympic Games"         
+[106] "Famicom Mini: Mario Bros."                           
+[107] "Mario Tennis"                                        
+[108] "Mario vs. Donkey Kong: Tipping Stars"                
+[109] "Dance Dance Revolution: Mario Mix (JP sales)"        
+[110] "Detective Conan: Marionette Symphony"                
+[111] "Mario Tennis"                                        
+[112] "Mario vs. Donkey Kong: Tipping Stars"                
+[113] "Mario &amp; Luigi: Paper Jam &amp; Mario Kart 7 Double Pack" </code></pre>
+</div>
+</div>
+</section>
+<section id="show-games-that-have-numbers-in-their-name" class="level1">
+<h1>Show games that have numbers in their name</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>games_with_numbers <span class="ot">&lt;-</span> dfgame[<span class="fu">grep</span>(<span class="st">"[0-9]"</span>, dfgame<span class="sc">$</span>Name), <span class="st">"Name"</span>]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(games_with_numbers, <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Super Mario Bros. 3"                        
+ [2] "Brain Age 2: More Training in Minutes a Day"
+ [3] "Gran Turismo 3: A-Spec"                     
+ [4] "Call of Duty: Modern Warfare 3"             
+ [5] "Call of Duty: Black Ops 3"                  
+ [6] "Call of Duty: Modern Warfare 2"             
+ [7] "Call of Duty: Modern Warfare 3"             
+ [8] "Mario Kart 7"                               
+ [9] "Halo 3"                                     
+[10] "Super Mario 64"                             
+[11] "Gran Turismo 4"                             
+[12] "Super Mario Land 2: 6 Golden Coins"         
+[13] "Super Mario 3D Land"                        
+[14] "Gran Turismo 5"                             
+[15] "Call of Duty: Modern Warfare 2"             
+[16] "Super Mario 64"                             
+[17] "Just Dance 3"                               
+[18] "Mario Kart 64"                              
+[19] "New Super Mario Bros. 2"                    
+[20] "Halo 4"                                     
+[21] "Just Dance 2"                               
+[22] "Gran Turismo 2"                             
+[23] "Call of Duty 4: Modern Warfare"             
+[24] "FIFA 16"                                    
+[25] "Halo 2"                                     
+[26] "Mario Party 8"                              
+[27] "Pokemon Black 2/Pokemon White 2"            
+[28] "FIFA Soccer 13"                             
+[29] "The Sims 3"                                 
+[30] "GoldenEye 007"                              </code></pre>
+</div>
+</div>
+</section>
+<section id="filter-games-tha-were-created-in-year-2007" class="level1">
+<h1>Filter games tha were created in year 2007</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>games_2007 <span class="ot">&lt;-</span> dfgame <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="dv">2007</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Games that were created in 2007 were:"</span>, games_2007<span class="sc">$</span>Name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Games that were created in 2007 were: Wii Fit Halo 3 Super Mario Galaxy Call of Duty 4: Modern Warfare Mario Party DS Mario Party 8 Mario &amp; Sonic at the Olympic Games Call of Duty 4: Modern Warfare LEGO Star Wars: The Complete Saga Assassin's Creed Professor Layton and the Curious Village The Legend of Zelda: Phantom Hourglass Link's Crossbow Training Guitar Hero III: Legends of Rock Pokemon Mystery Dungeon: Explorers of Time/Explorers of Darkness Uncharted: Drake's Fortune LEGO Star Wars: The Complete Saga Assassin's Creed Guitar Hero III: Legends of Rock Guitar Hero III: Legends of Rock Gran Turismo 5 Prologue Carnival Games World of Warcraft: The Burning Crusade God of War II Forza Motorsport 2 Professor Layton and the Diabolical Box Flash Focus: Vision Training in Minutes a Day Big Brain Academy: Wii Degree Ratchet &amp; Clank: Size Matters Super Paper Mario MySims Pro Evolution Soccer 2008 Cooking Mama 2: Dinner With Friends Crisis Core: Final Fantasy VII FIFA Soccer 08 The Elder Scrolls IV: Oblivion Dragon Ball Z: Budokai Tenkaichi 3 Mass Effect Cooking Mama: Cook Off Imagine: Babyz BioShock Imagine: Fashion Designer Sonic and the Secret Rings LEGO Star Wars: The Complete Saga Mario Strikers Charged Ratchet &amp; Clank Future: Tools of Destruction Monster Hunter Freedom 2 Madden NFL 08 Game Party Need for Speed: ProStreet LEGO Star Wars: The Complete Saga Madden NFL 08 WWE SmackDown vs Raw 2008 Guitar Hero III: Legends of Rock Resident Evil 4 Guitar Hero II High School Musical: Makin' the Cut! Call of Duty: Roads to Victory Dance Dance Revolution: Hottest Party Need for Speed: ProStreet Need for Speed: ProStreet PGR4 - Project Gotham Racing 4 TouchMaster High School Musical: Sing It! Rayman Raving Rabbids 2 The Orange Box Metroid Prime 3: Corruption High School Musical: Sing It! 2 Games in 1 Double Pack: The Incredibles / Finding Nemo: The Continuing Adventures FIFA Soccer 08 Crackdown Deal or No Deal Personal Trainer: Math Ben 10: Protector of Earth Star Wars Battlefront: Renegade Squadron MySims Heavenly Sword Dragon Quest IV: Chapters of the Chosen SpongeBob's Atlantis SquarePantis Pro Evolution Soccer 2008 Hannah Montana: Music Jam Resident Evil: The Umbrella Chronicles The Simpsons Game Sonic Rivals 2 The Simpsons Game Imagine: Master Chef Disney Princess: Magical Jewels Smarty Pants My Word Coach Hello Kitty Party SingStar Pop WWE SmackDown vs Raw 2008 Final Fantasy XII: Revenant Wings Hannah Montana: Spotlight World Tour Disney Princess: Enchanted Journey Namco Museum DS FIFA Soccer 08 FIFA Soccer 08 WWE SmackDown vs Raw 2008 Petz Wild Animals: Dolphinz EA Playground Rockstar Games presents Table Tennis Final Fantasy IV Ratatouille Winter Sports: The Ultimate Challenge Tom Clancy's Rainbow Six: Vegas Transformers: Autobots / Decepticons Diddy Kong Racing DS Ben 10: Protector of Earth Medal of Honor: Airborne The Sims 2: Castaway Shrek / Shrek 2 2-in-1 Gameboy Advance Video WWE SmackDown vs Raw 2008 Sonic Rush Adventure Final Fantasy Tactics: The War of the Lions SingStar Medal of Honor Heroes 2 Ninja Gaiden Sigma Call of Duty 4: Modern Warfare Hot Shots Golf: Out of Bounds Worldwide Soccer Manager 2008 Transformers: The Game (XBox 360, PS2, PS3, Wii &amp; PC Versions) Guitar Hero Encore: Rocks The 80s Need for Speed: ProStreet Medal of Honor: Airborne Petz Dogz 2 The Simpsons Game Virtua Fighter 5 Endless Ocean The Orange Box Pro Evolution Soccer 2008 DiRT Call of Duty 4: Modern Warfare Dora the Explorer: Dora Saves the Mermaids Virtua Tennis 3 Warhawk Apollo Justice: Ace Attorney Imagine: Animal Doctor The Simpsons Game Dragon Ball Z: Budokai Tenkaichi 3 Tom Clancy's Ghost Recon Advanced Warfighter 2 Tiger Woods PGA Tour 08 The Simpsons Game FIFA Soccer 08 Naruto: Clash of Ninja Revolution Tom Clancy's Ghost Recon Advanced Warfighter 2 Petz: Catz 2 Ace Combat 6: Fires of Liberation WWE SmackDown vs Raw 2008 Madden NFL 08 Grand Theft Auto: Vice City Stories Build-A-Bear Workshop MLB 07: The Show Lost Odyssey AMF Bowling Pinbusters! The Simpsons Game Spider-Man 3 Madden NFL 08 Buzz! The Mega Quiz DiRT Warriors Orochi SingStar '90s Tomb Raider: Anniversary The World Ends With You FIFA Soccer 08 NBA 2K8 Blazing Angels: Squadrons of WWII Harry Potter and the Order of the Phoenix Ratatouille Harvest Moon: Tree of Tranquility Time Crisis 4 Ben 10: Protector of Earth I Spy: Fun House Stranglehold Patapon Final Fantasy XI: Wings of the Goddess The Sims 2: Castaway Rayman Raving Rabbids 2 Final Fantasy Tactics A2: Grimoire of the Rift Dance Dance Revolution SuperNOVA 2 Ghost Squad Drawn to Life NCAA Football 08 Buzz! The Hollywood Quiz Kane &amp; Lynch: Dead Men Kane &amp; Lynch: Dead Men Spectrobes Tom Clancy's Rainbow Six: Vegas Namco Museum Remix Pirates of the Caribbean: At World's End Tiger Woods PGA Tour 08 Harvest Moon DS: Island of Happiness The Sims 2: Castaway Practise English! NBA Live 08 Major League Baseball 2K7 Ben 10: Protector of Earth Skate Crysis Dragon Quest Swords: The Masked Queen and the Tower of Mirrors Dynasty Warriors 6 Madden NFL 08 Two Worlds NCAA Football 08 Metal Gear Solid: Portable Ops Plus Shrek the Third MX vs. ATV Untamed Spider-Man 3 Hot Shots Golf: Open Tee 2 Cars: Mater-National Championship Unreal Tournament III Final Fantasy Crystal Chronicles: Ring of Fates The Darkness Ratatouille Phoenix Wright: Ace Attorney - Trials and Tribulations Tony Hawk's Proving Ground Naruto Shippuden: Ultimate Ninja 4 Wario: Master of Disguise Transformers: The Game (XBox 360, PS2, PS3, Wii &amp; PC Versions) Taiko no Tatsujin DS: Touch de Dokodon! SingStar Pop Hits SingStar R&amp;B MX vs. ATV Untamed Star Ocean: First Departure Paws &amp; Claws: Pet Vet Crash of the Titans Stuntman: Ignition Sega Rally Revo NBA Live 08 Donkey Kong Barrel Blast Juiced 2: Hot Import Nights Cabela's Big Game Hunter (2008) Shin Megami Tensei: Persona 3 FES SpongeBob's Atlantis SquarePantis Ganbaru Watashi no Kakei Diary SimCity DS Transformers: The Game (XBox 360, PS2, PS3, Wii &amp; PC Versions) The Golden Compass NBA 2K8 Major League Baseball 2K7 Spelling Challenges and more! Transformers: The Game (XBox 360, PS2, PS3, Wii &amp; PC Versions) Final Fantasy Anniversary Edition Petz Dogz 2 Mega Man Star Force 2: Zerker x Ninja / Saurian Blacksite: Area 51 Spider-Man 3 Tomb Raider: Anniversary No More Heroes Bratz 4 Real Odin Sphere Donkey Kong Jungle Climber NCAA March Madness 07 Hotel Dusk: Room 215 Petz Dogz 2 Tony Hawk's Proving Ground Manhunt 2 Purr Pals TMNT F.E.A.R. NBA 2K8 Tiger Woods PGA Tour 08 Manhunt 2 Tom Clancy's Ghost Recon Advanced Warfighter 2 Stuntman: Ignition Are You Smarter Than A 5th Grader? Silent Hill: Origins The Golden Compass NBA Live 08 Ratatouille Ratatouille Lair Petz: Hamsterz Life 2 My Word Coach Fire Emblem: Radiant Dawn Test Drive Unlimited Picross DS Final Fantasy II Anniversary Edition The BIGS Paws &amp; Claws: Dogs &amp; Cats Best Friends Boogie Dance Dance Revolution Universe 2 NBA Street Homecourt Tomb Raider: Anniversary Nicktoons: Attack of the Toybots Cars Mater-National Championship Crash of the Titans Harry Potter and the Order of the Phoenix Scene It? Lights Camera Action Scrabble 2007 Edition Shrek the Third The Sims 2: Pets Bratz: The Movie Spider-Man 3 Dynasty Warriors Gundam Shadowrun Crazy Taxi: Fare Wars Spider-Man 3 Spider-Man: Friend or Foe Crayola: Treasure Adventures Imagine: Figure Skater (US sales) Metal Gear Solid: The Essential Collection MX vs. ATV Untamed Crash of the Titans Syphon Filter: Logan's Shadow SingStar Amped The Golden Compass Burnout Dominator Pirates of the Caribbean: At World's End Barbie as The Island Princess The New York Times Crosswords Sega Rally Revo Thrillville: Off the Rails My Fashion Studio Petz: Catz 2 Bee Movie Game Tony Hawk's Proving Ground Worms: Open Warfare 2 My Spanish Coach The Darkness Super Robot Taisen OG: Original Generations Petz: Horsez 2 Puppy Luv: Spa and Resort Nicktoons: Attack of the Toybots SpongeBob's Atlantis SquarePantis Dragon Ball Z: Shin Budokai - Another Road Command &amp; Conquer 3: Tiberium Wars Def Jam Icon Petz: Horsez 2 Pirates of the Caribbean: At World's End The Legend of Spyro: The Eternal Night Medal of Honor Heroes 2 Yu-Gi-Oh! GX: Tag Force 2 Avatar: The Last Airbender - The Burning Earth NiGHTS: Journey of Dreams Solitaire Overload Thrillville: Off the Rails Zack &amp; Wiki: Quest for Barbaros' Treasure Pirates of the Caribbean: At World's End Castlevania: The Dracula X Chronicles TimeShift Crash of the Titans BioShock Cars: Mater-National Championship Itadaki Street DS 300: March to Glory Rogue Galaxy: Director's Cut Beowulf: The Game Overlord Transformers: The Game (XBox 360, PS2, PS3, Wii &amp; PC Versions) TMNT Hot Wheels: Beat That! Brunswick Pro Bowling Diner Dash: Sizzle &amp; Serve Tomb Raider: Anniversary Naruto: Path of the Ninja Fantastic Four: Rise of the Silver Surfer Juiced 2: Hot Import Nights Brunswick Pro Bowling The Dog Island Tiger Woods PGA Tour 08 Jam Sessions: Sing and Play Guitar (US sales) Looney Tunes: Acme Arsenal SD Gundam G Generation Spirits Tamagotchi Connection: Corner Shop 3 Skate NCAA Football 08 MX vs. ATV Untamed Tiger Woods PGA Tour 08 The Legend of Spyro: The Eternal Night Kingdom Under Fire: Circle of Doom The BIGS Spider-Man: Friend or Foe Juiced 2: Hot Import Nights Harry Potter and the Order of the Phoenix Kotoba no Puzzle: Mojipittan DS The Sims 2: Castaway My Horse &amp; Me ATV/Monster Truck Mayhem Worms: Open Warfare 2 Chicken Shoot SOCOM: Tactical Strike Battalion Wars 2 Mega Man ZX Advent College Hoops 2K8 Def Jam Icon Pirates of the Caribbean: At World's End Etrian Odyssey Conan Avatar: The Last Airbender - The Burning Earth Bee Movie Game Football Manager Handheld 2008 Momotarou Dentetsu DS: Tokyo &amp; Japan Puzzle Quest: Challenge of the Warlords The Eye of Judgment Pirates of the Caribbean: At World's End Digimon World: Dawn / Dusk Planet Puzzle League Naruto: Rise of a Ninja Warhammer 40,000: Squad Command SSX Blur Zaidan Houjin Nippon Kanji Nouryoku Kentei Kyoukai Kounin: KanKen DS 2 + Jouyou Kanji Jiten Eternal Sonata EA Playground Folklore Samurai Warriors 2: Xtreme Legends (JP sales) Beautiful Katamari Crash of the Titans Dance Dance Revolution Universe My Horse &amp; Me Manhunt 2 Clive Barker's Jericho Shrek the Third WipEout Pulse Fishing Master Jikkyou Powerful Pro Yakyuu 14 Contra 4 Barbie as The Island Princess MLB 07: The Show Dr. Seuss: How the Grinch Stole Christmas J-League Winning Eleven 2007: Club Championship NBA Live 08 Stranglehold Trauma Center: New Blood Super Robot Taisen W Spider-Man 3 Looney Tunes: Duck Amuck Super Robot Taisen OG: Original Generations Gaiden Dynasty Warriors 6 Harry Potter and the Order of the Phoenix John Deere: Harvest in the Heartland Spider-Man: Friend or Foe The Suite Life of Zack &amp; Cody: Circle of Spies Power Pro Kun Pocket 10 Final Fantasy XI: Wings of the Goddess Mah Jong Quest: Expeditions The Godfather: Dons Edition MLB Power Pros Prince of Persia: Rival Swords Punch-Out!! Bladestorm: The Hundred Years' War Madden NFL 08 Puzzle Quest: Challenge of the Warlords Shrek the Third Surf's Up NASCAR 08 Ratatouille: Food Frenzy The Golden Compass Bratz Ponyz Baby Pals Yu-Gi-Oh! World Championship 2008 Jackass the Game Surf's Up Syphon Filter: Dark Mirror MLB 07: The Show Shrek: Ogres &amp; Dronkeys Virtua Fighter 5 Online Soul Nomad &amp; the World Eaters The Warriors Cabela's Trophy Bucks Moero! Nekketsu Rhythm Damashii: Osu! Tatakae! Ouendan! 2 Boogie Bratz: The Movie Harry Potter and the Order of the Phoenix Stuntman: Ignition Ratatouille The BIGS Madden NFL 08 Super Collapse! 3 The Dog Island Fish Tycoon All-Pro Football 2K8 Battlestations: Midway Petz: Horsez 2 Tales of Innocence DS Bungaku Zenshuu Phantasy Star Universe: Ambition of the Illuminus Smart Girl's Playhouse Juiced 2: Hot Import Nights NCAA March Madness 08 SD Gundam G Generation: Cross Drive Tom Clancy's Splinter Cell: Double Agent Avatar: The Last Airbender - The Burning Earth Sega Rally Revo A.C.E.: Another Century's Episode 3: The Final NHL 08 Spelling Challenges and more! Tony Hawk's Proving Ground Animal Paradise NHL 08 MotoGP '07 Mortal Kombat: Armageddon Armored Core 4 We Love Golf! Cars: Mater-National Championship Harry Potter and the Order of the Phoenix Major League Baseball 2K7 Driver '76 Dancing With The Stars Luminous Arc Monster Jam Ghost Rider Juiced 2: Hot Import Nights Viva Pinata: Party Animals NASCAR 08 Hot Wheels: Beat That! M&amp;M's Kart Racing Looney Tunes: Acme Arsenal Ultimate Duck Hunting: Hunting &amp; Retrieving Ducks NASCAR 08 Tony Hawk's Proving Ground World Series of Poker 2008: Battle for the Bracelets Naruto Shippuden: Ninja Council 4 Barbie as The Island Princess Disney Princess: Enchanted Journey Hooked! Real Motion Fishing Dinosaur King Buzz! Junior: RoboJam Gundam Battle Chronicle The Legend of Spyro: The Eternal Night Aliens vs Predator: Requiem Jackass the Game Jewel Quest: Expeditions Touch the Dead DS Nishimura Kyotaro Suspense Shin Tantei Series: Kyoto Atami Zekkai no Kotou - Satsui no Wana Final Fantasy Fables: Chocobo's Dungeon Dorabase DS: Dramatic Stadium NCAA March Madness 08 Rayman Raving Rabbids Brunswick Pro Bowling Vampire Rain Dragon Ball Z: Harukanaru Densetsu NCAA March Madness 07 Enchanted Arms Sengoku Basara 2 Heroes Clive Barker's Jericho Monster Jam Cabela's Big Game Hunter (2008) Soldier of Fortune: Payback Sid Meier's Pirates! Conan Ratatouille Warriors Orochi Boogie Dynasty Warriors Gundam Pro Yaky? Spirits 4 SoulCalibur Legends Chibi-Robo! Park Patrol One Piece: Unlimited Adventure Face Training Disney's Meet the Robinsons J-League Pro Soccer Club o Tsukurou! 5 Dragon Blade: Wrath of Fire Call of Juarez The Bee Game NBA Live 08 Nep League DS Ar tonelico 2: Melody of Metafalica Spider-Man: Friend or Foe Disney Friends Van Helsing Mercury Meltdown Revolution College Hoops 2K7 College Hoops 2K8 My French Coach Lost in Blue 3 Professional Fisherman's Tour: Northern Hemisphere Kekkaishi: Karasumori Ayakashi Kidan Dementium: The Ward .hack//G.U. Vol.3//Redemption Pursuit Force: Extreme Justice Bee Movie Game Fate/Stay Night [Réalta Nua] Fuzion Frenzy 2 Garfield: Lasagna World Tour Bomberman Land Hot Wheels: Beat That! Naruto Shippuden: Ultimate Ninja 5 Surf's Up Go, Diego, Go! Safari Rescue TOEIC Test Training DS Thrillville: Off the Rails Monster Jam Godzilla Unleashed San Goku Shi Taisen DS Dancing With The Stars Beowulf: The Game Dewy's Adventure The BIGS TimeShift Rondo of Swords (US sales) Chessmaster: The Art of Learning Imagine: Ice Champions Left Brain Right Brain: Use Both Hands Train Both Sides Bomberman Land Touch! 2 The Godfather: Blackhand Edition Arcana Heart Bust-A-Move Bash! WordJong Bleach: Dark Souls All-Pro Football 2K8 Dragon Ball Z: Harukanaru Densetsu (JP sales) Samurai Warriors: Katana Heroes of Mana Blazing Angels 2: Secret Missions of WWII Fantastic Four: Rise of the Silver Surfer NBA Street Homecourt Final Fantasy XI: Vana'diel Collection 2008 Suzumiya Haruhi no Yakusoku Spider-Man: Friend or Foe Ultimate Board Game Collection Hot Wheels: Beat That! Soldier of Fortune: Payback Scarface: The World is Yours Rayman Raving Rabbids Geometry Wars: Galaxies Cars: Mater-National Championship Tamagotchi no Appare! Niji Venture CSI: 3 Dimensions of Murder Power Rangers: Super Legends Ratatouille The Orange Box Victorious Boxers: Revolution Cranium Kabookii Arctic Tale Anno 1701: Dawn of Discovery Chicken Shoot Blazing Angels 2: Secret Missions of WWII ¡Shin Chan Flipa en colores! Holy Invasion of Privacy, Badman! What Did I Do to Deserve This? Monster Jam Jikkyou Powerful Pro Yakyuu Wii College Hoops 2K8 Hard Rock Casino Wild ARMs XF Alvin and the Chipmunks Avatar: The Last Airbender - The Burning Earth Paws &amp; Claws: Pet Vet 2 NHL 2K8 Brain Assist SingStar Latino Fatal Inertia Wantame Music Channel: Doko Demo Style NBA 08 Indianapolis 500 Legends Summon Night: Twin Age Smart Boy's Gameroom Puzzle de Harvest Moon Hour of Victory NBA 08 7 Wonders of the Ancient World Shining Wind Need for Speed: ProStreet Impossible Mission Baroque Geometry Wars: Galaxies Horse Life Diner Dash: Sizzle &amp; Serve Godzilla Unleashed: Double Smash Star Trek: Conquest Puzzle Quest: Challenge of the Warlords WWE SmackDown vs Raw 2008 Mobile Suit Gundam Seed: Rengou vs. Z.A.F.T. Portable Lovely Lisa Yamakawa Shuppansha Kanshuu: Shousetsu Nihonshi B Cory in the House Animal Genius MX vs. ATV Untamed Prince of Persia: Rival Swords Marvel Trading Card Game Cruis'n Barbie as The Island Princess Tales of Destiny 2 Ultimate Puzzle Games: Sudoku Edition TMNT DEATH NOTE: Kira Game Hisshou Pachinko*Pachi-Slot Kouryaku Series Vol.10: CR Shinseiki Evangelion: Kiseki no Kachi ASH: Archaic Sealed Heat Fantastic Four: Rise of the Silver Surfer Dokapon Kingdom Retro Game Challenge Ultimate Mortal Kombat Monster Madness: Battle for Suburbia The Settlers Jake Hunter Detective Story: Memories of the Past Super Swing Golf Season 2 Cake Mania Surf's Up Pocket Pets Power Rangers: Super Legends MLB Power Pros Kousoku Card Battle: Card Hero American Girl: Julie Finds a Way The History Channel: Battle for the Pacific Mobile Suit Gundam: MS Sensen 0079 Guitar Rock Tour Smash Court Tennis 3 Kouchuu Ouja Mushi King: Super Collection FlatOut: Ultimate Carnage Higurashi no Naku Koro ni Matsuri Touch Detective 2 1/2 Rocky Balboa Master of the Monster Lair Hitman Trilogy Tetris Evolution The Cheetah Girls: Pop Star Sensations The BIGS Sudokuro Final Fantasy XII International Zodiac Job System Barbie in The 12 Dancing Princesses Kirarin * Revolution: Tsukutte Misechao! Kime * Kira Stage Thrillville: Off the Rails PictoImage Momotarou Dentetsu 16 Myst Brooktown High: Senior Year Medal of Honor: Vanguard Kirarin * Revolution: Mezase! Idol Queen Dungeons &amp; Dragons Tactics Hot Wheels Ultimate Racing Daito Giken Koushiki Pachi-Slot Simulator: Hihouden - Ossu! Banchou - Yoshimune DS Draglade DS Kageyama Method: Dennou Hanpuku - Tadashii Kanji Kakitori-Kun Surf's Up World Snooker Championship 2007 World Series of Poker 2008: Battle for the Bracelets Bee Movie Game Opoona Nodame Cantabile Bleach: Dark Souls (JP sales) Kiku! Kaku! Kotoba o Fuyasu! Hajimete no Eigo Training CSI: Hard Evidence Code Lyoko: Quest for Infinity Naruto Shippuden: Gekito Ninja Taisen! EX Retro Game Challenge (US sales) MotoGP 07 Shining Force EXA Heatseeker InuYasha: Secret of the Divine Jewel Pro Yakyuu Famista DS EyeCreate Glory Days 2 Bladestorm: The Hundred Years' War Halo 2 Unou no Tatsujin: Soukai! Machigai Museum 2 Yu-Gi-Oh! GX: The Beginning of Destiny (US sales) Star Wars: Empire at War - Gold Pack NCAA March Madness 08 NHL 2K8 Jenga World Tour Atari Classics Evolved Kawasaki Quad Bikes Jikkyou Powerful Pro Yakyuu 14 Ketteiban Jikkyou Powerful Pro Yakyuu Portable 2 Reading Training Ochaken no Heya DS 2 Beowulf: The Game Saiyuuki: Kinkaku, Ginkaku no Inbou Mugen Keitai Disgaea Pachitte Chonmage Tatsujin 10: Pachinko Fuyu no Sonata Kenka Banchou 2: Full Throttle Zoids Assault Kurikin: Nano Island Story Naruto Shippuden: Gekito Ninja Taisen! EX 2 El Tigre: The Adventures of Manny Rivera F.E.A.R. Files Samurai Warriors 2: Xtreme Legends Major League Baseball 2K7 Blacksite: Area 51 Indianapolis 500 Legends NCAA Football 08 America's Army: True Soldiers Pachitte Chonmage Tatsujin 13: Pachinko Hissatsu Shigotojin III Puchi Puchi Virus Death Jr. and the Science Fair of Doom Gintama Gin-Oh Quest: Gin-San ga Tenshoku Shitari Sekai wo Sukuttari Ninjabread Man Crush Pro Evolution Soccer 2008 (JP sales) Looney Tunes: Acme Arsenal Yamakawa Shuppansha Kanshuu: Shousetsu Sekaishi B Disney's Meet the Robinsons World Series of Poker 2008: Battle for the Bracelets Gintama: Gin-San to Issho! Boku no Kabuki Machi Nikki 7 Wonders of the Ancient World Final Fantasy XI: Vana'diel Collection 2008 Bleach: Heat the Soul 4 Boku no Natsuyasumi 3: Hokkoku Hen: Chiisana Boku no Dai Sougen​ Alien Syndrome Cosmic Family Dragon Shadow Spell The Idolm@ster Madden NFL 08 Katekyoo Hitman Reborn! DS: Flame Rumble Kaien Ring Soudatsuen! Fate/Tiger Colosseum One Piece: Gear Spirit Tales of Fandom Vol.2 Backyard NBA Basketball Record of Agarest War CSI: Dark Motives Alvin and the Chipmunks Backyard Hockey River King: Mystic Valley (US sales) Romance of the Three Kingdoms XI Elements of Destruction Eiken DS Hannspree Ten Kate Honda: SBK Superbike World Championship Aqua Teen Hunger Force: Zombie Ninja Pro-Am Make 10: A Journey of Numbers Operation Darkness Showtime Championship Boxing Dave Mirra BMX Challenge Theme Park The Sims 2: Seasons Anubis II Heavenly Guardian Operation: Vietnam Ultimate Board Game Collection Higurashi no Naku Koro ni Matsuri: Kakera Asobi Command &amp; Conquer 3: Tiberium Wars Dynasty Warriors DS: Fighter's Battle Zettai Onkan Otoda Master Dragoneer's Aria N+ Shin Lucky * Star: Moe Drill ~Tabidachi~ Lost in Blue 2 Fatal Fury: Battle Archives Volume 2 R-Type Command Age of Empires III: The Asian Dynasties Dungeon Maker II: The Hidden War Doraemon: Nobita no Shin Makai Daibouken DS Interactive Storybook DS Series 1 Warhammer 40,000: Squad Command Pro Yaky? Spirits 4 Walt Disney Pictures Presents Enchanted Orcs &amp; Elves Mitsukete! Keroro Gunsou: Machigai Sagashi Daisakusen de Arimasu! Legend of the Dragon Kiniro no Corda 2 Octomania Fishing Master (jp sales) Pawly Pets: My Vet Practice Bomberman Land Seaman 2: Peking Genjin Ikusei Kit Panzer Tactics Alien Syndrome The Legend of Heroes: Trails in the Sky Second Chapter Spy Games: Elevator Mission Unreal Tournament III Arkanoid DS Disney's Kim Possible: Global Gemini Coded Arms: Contagion Kurupoto Cool Cool Stars The Witcher Warriors of the Lost Empire World Series of Poker 2008: Battle for the Bracelets Alvin and the Chipmunks Cabela's Big Game Hunter (2008) Showtime Championship Boxing Foster's Home for Imaginary Friends: Imagination Invaders Impossible Mission Pro Yakyuu Netsu Star 2007 Izuna 2: The Unemployed Ninja Returns Zendoku Crazy Chicken: Pharaoh's Treasure S.T.A.L.K.E.R.: Shadow of Chernobyl The History Channel: Battle for the Pacific Tiger Woods PGA Tour 08 Hajime no Ippo Portable: Victorious Spirits Katekyoo Hitman Reborn! DS: Flame Rumble Mukuro Kyoushuu Mana Khemia: Alchemists of Al-Revis Wantame Fortune Channel Bleach: Blade Battlers 2nd Kaite Shabette Hajimeyou! Monster Farm DS Dungeon Explorer: Warriors of Ancient Arts Hisshou Pachinko*Pachi-Slot Kouryaku Series Vol. 11: Shinseiki Evangelion - Magokoro o, Kimi ni Meitantei Conan: Tantei Ryoku Trainer Backyard NFL Football '08 Medal of Honor: Airborne Virtua Tennis 3 Domino Rally Katekyoo Hitman Reborn! DS: Shinuki Max! Vongola Carnival!! UEFA Champions League 2006-2007 Myth Makers: Orbs of Doom Code Lyoko Taito Legends Power Up Metal Slug Anthology Tsumiki: Block Drop Mania Pony Friends Air Traffic Chaos Prism: Light the Way Microsoft Flight Simulator X Acceleration Expansion Pack Ontamarama DokiDoki Majo Shinpan! Jenga World Tour Keroro Gunsou: Enshuu da Yo! Zenin Shuugou Part 2 Nounai Aeshe: IQ Suppli DS 2 - Sukkiri King Ketteisen PachiPara 14: Fuu to Kumo to Super Umi in Okinawa Sea Monsters: A Prehistoric Adventure Hokuto no Ken Virtua Tennis 3 Yu-Gi-Oh! World Championship 2007 Lupin III: Lupin ni wa Shi o, Zenigata ni wa Koi o Furu Furu Park D.Gray-man: Kami no Shitotachi Nicktoons: Attack of the Toybots GrimGrimoire Tokimeki Memorial: Girls Side 1st Love Growlanser VI: Precarious World Boing! Docomodake DS Smash Court Tennis 3 Kiniro no Corda 2 Encore Silent Hunter: Wolves of the Pacific Billy the Wizard: Rocket Broomstick Racing Pool Party Supreme Commander MiniCopter: Adventure Flight TMNT Arctic Tale Balloon Pop Crazy Chicken: Atlantis Quest Counter Force Fantastic Four: Rise of the Silver Surfer Cabela's Trophy Bucks City Life: World Edition Fantastic Four: Rise of the Silver Surfer Thrillville: Off the Rails Mana Khemia: Alchemists of Al-Revis (JP sales) Guilty Gear XX Accent Core Yes! PreCure 5 Bionicle Heroes Front Mission Heatseeker Daito Giken Koushiki Pachi-Slot Simulator: Shake II Dead Head Fred Disney's Meet the Robinsons Monster Trux Arenas: Special Edition Castle of Shikigami III Need for Speed: ProStreet The Monkey King: The Legend Begins Platinum Sudoku Pocket Pool Lise no Atelier: Ordre no Renkinjutsushi Guilty Gear XX Accent Core Watashi no Relaxuma Tennis no Oji-Sama: DokiDoki Survival - Umibe no Secret Hannspree Ten Kate Honda: SBK Superbike World Championship Banushi Life Game: Winner's Circle Company of Heroes: Opposing Fronts PopCap Arcade Vol 1 SWAT: Target Liberty Meteos: Disney Magic Samurai Warriors 2: Empires Imabikisou Empire Earth III King of Fighters: Maximum Impact Regulation A Who Wants to be a Millionaire: 1st Edition Surf's Up Haneru no Tobira DS: Tanshuku Tetsudou no Yoru Brothers In Arms DS Draglade (JP sales) Supreme Commander: Forged Alliance Harry Potter and the Order of the Phoenix Holly Hobbie &amp; Friends R-Type Command (correct US sales) Zoo Hospital Real Soccer 2008 Rugby 08 Bubble Bobble Double Shot Simple DS Series Vol. 15: The Kanshikikan 2 - Aratanaru 8-tsu no Jiken wo Touch seyo Napoleon Dynamite: The Game Enchanted Arms (JP sales) Onsei Kanjou Sokuteiki: Kokoro Scan World in Conflict Super Robot Taisen: Scramble Commander the 2nd Tomb Raider: Anniversary Gothic Universe Double Value!: ATV Thunder Ridge Riders / Monster Trucks Mayhem NHRA Drag Racing: Countdown to the Championship Boulder Dash: Rocks! NHRA Drag Racing: Countdown to the Championship Wangan Midnight Kekkaishi: Kokubourou no Kage Who Wants to be a Millionaire: 1st Edition Women's Volleyball Championship Jikkyou Powerful Pro Yakyuu Wii Ketteiban Rakushou! Pachi-Slot Sengen 5: Rio Paradise Makai Senki Disgaea Portable: Tsuushin Taisen Hajime Mashita Metal Gear Solid: The Essential Collection (JP sales) Pachitte Chonmage Tatsujin 12: Pachinko Ultraman Safari Adventures: Africa Legend of the Dragon Suujin Taisen Combat Mission: Shock Force Mystery Case Files: Ravenhearst River King: Mystic Valley (jp sales) Mame Goma: Honobo no Nikki Arthur and the Invisibles Flipper Critters Saru! Get You! SaruSaru Daisakusen Vegas Casino Biker Mice From Mars Underground Pool Konami Classics Series: Arcade Hits Hiiro no Kakera 2: Hisui no Shizuku Eyeshield 21: Field Saikyou no Senshi Tachi Ratatouille BeatMania IIDX 13: DistorteD Hot Pixel Pet Alien: An Intergalactic Puzzlepalooza Minna no Golf Jou Vol.1 Resident Evil 4 Pop'n Music 14 Fever! N+ Code Geass: Hangyaku no Lelouch Galaxy Angel II: Mugen Kairou no Kagi Drake &amp; Josh: Talent Showdown NBA 08 Treasure Gaust: Gaust Diver Crimson Red / Deep Purple Driver: Parallel Lines Betty Boop's Double Shift HotBrain Gintama: Banji Oku Chuubu! Negima!? Dream Tactic Yumemiru Otome Princess Eco Creatures: Save The Forest Dragon Tamer: Sound Spirit The Battle of Yuu Yuu Hakusho: Shitou! Ankoku Bujutsukai! 120% The Sims 2: Bon Voyage Kabu Trader Shun Ookiku Furikabutte: Honto no Ace ni Nareru kamo Medal of Honor: Vanguard AniMates! Backyard NFL Football Age of Empires III: Gold Edition Jissen Pachi-Slot Hisshouhou! Hokuto no Ken 2 Napoleon Dynamite: The Game Rock 'N' Roll Adventures Gakuen Alice: WakuWaku * Happy Friends DEATH NOTE: L o Tsugu Mono Shinseiki Evangelion: Battle Orchestra The Settlers: Rise of an Empire World Series of Poker 2008: Battle for the Bracelets Viva Pinata Chili Con Carnage O.M.G. 26 - Our Mini Games Wangan Midnight Portable SimCity Societies Bomberman Story DS Backyard NFL Football NANA: Live Staff Daiboshuu! Shoshinsha Kangei Zero no Tsukaima: Shou-akuma to Harukaze no Concerto Nanatsuiro * Drops Pure!! G1 Jockey Wii Wrestle Kingdom 2: Pro Wrestling Sekai Taisen Ikki Tousen: Shining Dragon DiRT Minna no Chizu 2 Test Drive Unlimited Interactive Storybook DS Series 3 Overlord Balls of Fury Warriors of the Lost Empire (JP sales) Jissen Pachinko Hisshouhou! CR Sakura Taisen Happiness! De-Lucks Jissen Pachi-Slot Hisshouhou! Mister Magic Neo Disney's Meet the Robinsons Legend: Hand of God The Fast and the Furious Puyo Puyo! 15th Anniversary Tengen Toppa Gurren-Lagann Jinsei Game Wii Meitantei Evangelion Spider-Man 3 Shaberu! DS Oryouri Navi: Marugoto Teikoku Hotel: Saikouhou no Ryouri-chou ga Oshieru Katei Ryouri Super PickUps Puzzle Quest: Challenge of the Warlords Negima!? Chou Mahora Taisen Chuu: Checkiin Zenin Shuugou! Yappari Onsen Kichaimashitaa Hellgate: London Chicken Hunter Pippa Funnell: Ranch Rescue B-17: Fortress in the Sky Winning Post 7: Maximum 2007 Worms Nervous Brickdown Spanish for Everyone! UFO: Trilogy AIR Katekyoo Hitman Reborn! Dream Hyper Battle! Elvandia Story Katekyoo Hitman Reborn!! Let's Ansatsu!? Nerawareta 10 Daime! Guitar Freaks V3 &amp; DrumMania V3 Snow Portable Guitar Freaks &amp; DrumMania: Masterpiece Gold Yu-Gi-Oh! GX: The Beginning of Destiny (JP sales) Garfield's Nightmare Sega Ages 2500 Series Vol. 29: Monster World Complete Collection Arabians Lost: The Engagement on Desert Gakken DS: Shin TOEIC Test Kanzen Kouryaku Puzzle Guzzle Myth Makers: Super Kart GP Frisbee Disc Freestyle / Frisbee Disc Golf Shounen Onmyouji: Tsubasa Yoima, Ten e Kaere Bakumatsu Renka: Karyuu Kenshi-den Haneru no Tobira Wii: Girigirissu NEVES Balls of Fury Kabushiki Baibai Trainer: Kabutore! Next Hisshou Pachinko*Pachi-Slot Kouryaku Series Vol. 9: CR Fever Captain Harlock Cabbage Patch Kids: The Patch Puppy Rescue Amagoushi no Yakata Cookie &amp; Cream Let's Yoga! Zero no Tsukaima: Muma ga Tsumugu Yokaze no Nocturne Cube Shinseiki GPX Cyber Formula: Road To The INFINITY 4 Sansuu Puzzle de Migaku: Gakken Otona no Shikou Sense Gears of War Densha de Go! Shinkansen EX: Sanyou Shinkansen-hen Let's Pilates! Memories Off #5: Encore Busou Renkin: Youkoso Papillon Park e FIFA Soccer 08 Zoey 101: Field Trip Fiasco Winning Post 7: Maximum 2007 Monster Trux Offroad Shinkyoku Soukai Polyphonica San Goku Shi DS 2 Enemy Territory: Quake Wars Triggerheart Exelica Tennis no Oji-Sama: Card Hunter Race Driver: Create &amp; Race Pippa Funnell 2: Farm Adventures Pachinko Kaou: Misora Hibari Drone Tactics Ship Simulator 2008 Ouran Koukou Host Bu Dragon Zakura DS Neverwinter Nights 2: Mask of the Betrayer UEFA Champions League 2006-2007 Wiffle Ball Advance Simple DS Series Vol. 14: The Jidousha Kyoushuujo DS Guitar Hero III: Legends of Rock Virtua Tennis 3 Nodame Cantabile Theatre Of War SoulCalibur Legends (JP sales) Rail Simulator Rozen Maiden: Gebetgarten Fatal Fury: Battle Archives Volume 2 (JP sales) Jewel Quest II Metal Slug Anthology Simple 2000 Series Vol. 120: The Saigo no Nippon Tsuwamono Tomoyo After: It's a Wonderful Life CS Edition Aa Megami-samaa Spider-Man: Friend or Foe Soshite Kono Uchuu ni Kirameku Kimi no Shi XXX Sengoku Basara 2 Heroes F.E.A.R. Perseus Mandate Jinsei Game Q DS: Shouwa no Dekigoto Doraemon Wii: Himitsu Douguou Ketteisen! Goku Makaimura Kai Myself; Yourself Slide Adventure: Mag Kid Battlestations: Midway Kono Aozora ni Yakusoku o: Melody of the Sun and Sea TimeShift Surf's Up Full Auto 2: Battlelines Dungeon Explorer: Warriors of Ancient Arts Jam Sessions: Sing and Play Guitar (jp sales) Rondo of Swords (jp sales) Fashionable Puppy: Oshare na Koinu DS Idol Janshi Suchie-Pai IV Juiced 2: Hot Import Nights Monster Jam Fullmetal Alchemist: Trading Card Game Luxor: Pharaoh's Challenge Hoshigami: Ruining Blue Earth Remix World Snooker Championship 2007 Nova Usagi no Game de Ryuugaku!? DS San-X: Chara Sagashi Land Petz: Hamsterz Life 2 Vitamin X The Wild West Sega Rally Revo World Heroes Anthology Routes PE Clive Barker's Jericho G1 Jockey 4 2007 Shijyou Saikyou no Deshi Kenichi: Gekitou! Ragnarok Hachikengou Magicians Academy Hospital Tycoon Case Closed: One Truth Prevails Palais de Reine Teenage Mutant Ninja Turtles Sea Monsters: A Prehistoric Adventure Imagine Figure Skater (JP sales) Mahou Sensei Negima!? Neo-Pactio Fight!! Pro Evolution Soccer 2008 Original Frisbee Disc Sports: Ultimate &amp; Golf Mini Desktop Racing Eiyuu Densetsu: Sora no Kiseki Material Collection Portable</code></pre>
+</div>
+</div>
+</section>
+<section id="create-new-column-with-initials-of-game-names" class="level1">
+<h1>Create new column with initials of game names</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>dfgame<span class="sc">$</span>Initials_Of_Games <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">str_extract_all</span>(dfgame<span class="sc">$</span>Name, <span class="st">"[A-Z]"</span>), <span class="cf">function</span>(x) <span class="fu">paste0</span>(<span class="fu">substr</span>(x, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">collapse =</span> <span class="st">"."</span>))</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>dfgame <span class="ot">&lt;-</span> dfgame[, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">which</span>(<span class="fu">names</span>(dfgame) <span class="sc">==</span> <span class="st">"Name"</span>), </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>             <span class="fu">which</span>(<span class="fu">names</span>(dfgame) <span class="sc">==</span> <span class="st">"Initials_Of _games"</span>), </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>             (<span class="fu">which</span>(<span class="fu">names</span>(dfgame) <span class="sc">==</span> <span class="st">"Name"</span>) <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">ncol</span>(dfgame))]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dfgame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Rank                     Name Platform Year        Genre Publisher NA_Sales
+1    1               Wii Sports      Wii 2006       Sports  Nintendo    41.49
+2    2        Super Mario Bros.      NES 1985     Platform  Nintendo    29.08
+3    3           Mario Kart Wii      Wii 2008       Racing  Nintendo    15.85
+4    4        Wii Sports Resort      Wii 2009       Sports  Nintendo    15.75
+5    5 Pokemon Red/Pokemon Blue       GB 1996 Role-Playing  Nintendo    11.27
+6    6                   Tetris       GB 1989       Puzzle  Nintendo    23.20
+  EU_Sales JP_Sales Other_Sales Global_Sales Initials_Of_Games
+1    29.02     3.77        8.46        82.74               W.S
+2     3.58     6.81        0.77        40.24             S.M.B
+3    12.88     3.79        3.31        35.82             M.K.W
+4    11.01     3.28        2.96        33.00             W.S.R
+5     8.89    10.22        1.00        31.37           P.R.P.B
+6     2.26     4.22        0.58        30.26                 T</code></pre>
+</div>
+</div>
+</section>
+<section id="find-minmaxrangemean-median-of-column-global_sales" class="level1">
+<h1>Find min,max,range,mean, median of column Global_Sales</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(dfgame<span class="sc">$</span>Global_Sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(dfgame<span class="sc">$</span>Global_Sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 82.74</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(dfgame<span class="sc">$</span>Global_Sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  0.01 82.74</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dfgame<span class="sc">$</span>Global_Sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5374407</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(dfgame<span class="sc">$</span>Global_Sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.17</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(dfgame<span class="sc">$</span>Global_Sales) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.418112</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dfgame<span class="sc">$</span>Global_Sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0100  0.0600  0.1700  0.5374  0.4700 82.7400 </code></pre>
+</div>
+</div>
+</section>
+<section id="calculate-the-number-of-nintendo-games" class="level1">
+<h1>Calculate the number of nintendo games</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>nintendo_games <span class="ot">&lt;-</span> dfgame[dfgame<span class="sc">$</span>Publisher <span class="sc">==</span> <span class="st">"Nintendo"</span>, ]</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>number_of_nintendo_games <span class="ot">&lt;-</span> <span class="fu">nrow</span>(nintendo_games)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(number_of_nintendo_games)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 703</code></pre>
+</div>
+</div>
+</section>
+<section id="the-difference-between-the-oldest-and-newest-game" class="level1">
+<h1>The difference between the oldest and newest game</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dfgame<span class="sc">$</span>Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dfgame<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(dfgame<span class="sc">$</span>Year)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>oldest_year <span class="ot">&lt;-</span> <span class="fu">min</span>(dfgame<span class="sc">$</span>Year, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>newest_year <span class="ot">&lt;-</span> <span class="fu">max</span>(dfgame<span class="sc">$</span>Year, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>year_difference <span class="ot">&lt;-</span> newest_year <span class="sc">-</span> oldest_year</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"The difference between the oldest and newest years is:"</span>, year_difference, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The difference between the oldest and newest years is: 40 </code></pre>
+</div>
+</div>
+</section>
+<section id="years-passed-since-release-of-the-games" class="level1">
+<h1>Years passed since release of the games</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>dfgame <span class="ot">&lt;-</span> dfgame <span class="sc">%&gt;%</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Years_Passed =</span> <span class="fu">as.numeric</span>(<span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y"</span>)) <span class="sc">-</span> <span class="fu">as.numeric</span>(Year))</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dfgame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Rank                     Name Platform Year        Genre Publisher NA_Sales
+1    1               Wii Sports      Wii 2006       Sports  Nintendo    41.49
+2    2        Super Mario Bros.      NES 1985     Platform  Nintendo    29.08
+3    3           Mario Kart Wii      Wii 2008       Racing  Nintendo    15.85
+4    4        Wii Sports Resort      Wii 2009       Sports  Nintendo    15.75
+5    5 Pokemon Red/Pokemon Blue       GB 1996 Role-Playing  Nintendo    11.27
+6    6                   Tetris       GB 1989       Puzzle  Nintendo    23.20
+  EU_Sales JP_Sales Other_Sales Global_Sales Initials_Of_Games Years_Passed
+1    29.02     3.77        8.46        82.74               W.S           18
+2     3.58     6.81        0.77        40.24             S.M.B           39
+3    12.88     3.79        3.31        35.82             M.K.W           16
+4    11.01     3.28        2.96        33.00             W.S.R           15
+5     8.89    10.22        1.00        31.37           P.R.P.B           28
+6     2.26     4.22        0.58        30.26                 T           35</code></pre>
+</div>
+</div>
+</section>
+<section id="total-global-sales-by-platform" class="level1">
+<h1>Total global sales by platform</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>platforms <span class="ot">&lt;-</span> dfgame <span class="sc">%&gt;%</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Platform) <span class="sc">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Total_Global_Sales =</span> <span class="fu">sum</span>(Global_Sales))</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>platforms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 2
+   Platform Total_Global_Sales
+   &lt;chr&gt;                 &lt;dbl&gt;
+ 1 2600                  97.1 
+ 2 3DO                    0.1 
+ 3 3DS                  247.  
+ 4 DC                    16.0 
+ 5 DS                   822.  
+ 6 GB                   255.  
+ 7 GBA                  318.  
+ 8 GC                   199.  
+ 9 GEN                   28.4 
+10 GG                     0.04
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="histogram-of-column-global-sales-by-year" class="level1">
+<h1>Histogram of column global sales by year</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>dfgame<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dfgame<span class="sc">$</span>Year)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfgame, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Global_Sales)) <span class="sc">+</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"palevioletred"</span>) <span class="sc">+</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Global Sales by Year"</span>,</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Global Sales"</span>) <span class="sc">+</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="project_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="pi-chart" class="level1">
+<h1>Pi chart</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>sales_summary <span class="ot">&lt;-</span> dfgame <span class="sc">%&gt;%</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">NA_Sales =</span> <span class="fu">sum</span>(NA_Sales, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">EU_Sales =</span> <span class="fu">sum</span>(EU_Sales, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">JP_Sales =</span> <span class="fu">sum</span>(JP_Sales, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Other_Sales =</span> <span class="fu">sum</span>(Other_Sales, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>sales_long <span class="ot">&lt;-</span> sales_summary <span class="sc">%&gt;%</span></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Region"</span>, <span class="at">values_to =</span> <span class="st">"Sales"</span>)</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sales_long, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> Sales, <span class="at">fill =</span> Region)) <span class="sc">+</span></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">width =</span> <span class="dv">1</span>, <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>, <span class="at">start =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"NA_Sales"</span> <span class="ot">=</span> <span class="st">"skyblue"</span>, <span class="st">"EU_Sales"</span> <span class="ot">=</span> <span class="st">"seagreen"</span>, <span class="st">"JP_Sales"</span> <span class="ot">=</span> <span class="st">"maroon"</span>, <span class="st">"Other_Sales"</span> <span class="ot">=</span> <span class="st">"khaki"</span>)) <span class="sc">+</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sales Distribution by Region"</span>, <span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="project_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="filter-games-that-with-global-sales-between-10-50" class="level1">
+<h1>Filter games that with global sales between 10-50</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>filtered_games <span class="ot">&lt;-</span> dfgame <span class="sc">%&gt;%</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Global_Sales <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> Global_Sales <span class="sc">&lt;=</span> <span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Name, Global_Sales)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>filtered_games</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                           Name Global_Sales
+1                             Super Mario Bros.        40.24
+2                                Mario Kart Wii        35.82
+3                             Wii Sports Resort        33.00
+4                      Pokemon Red/Pokemon Blue        31.37
+5                                        Tetris        30.26
+6                         New Super Mario Bros.        30.01
+7                                      Wii Play        29.02
+8                     New Super Mario Bros. Wii        28.62
+9                                     Duck Hunt        28.31
+10                                   Nintendogs        24.76
+11                                Mario Kart DS        23.42
+12                  Pokemon Gold/Pokemon Silver        23.10
+13                                      Wii Fit        22.72
+14                                 Wii Fit Plus        22.00
+15                           Kinect Adventures!        21.82
+16                           Grand Theft Auto V        21.40
+17                Grand Theft Auto: San Andreas        20.81
+18                            Super Mario World        20.61
+19 Brain Age: Train Your Brain in Minutes a Day        20.22
+20                Pokemon Diamond/Pokemon Pearl        18.36
+21                             Super Mario Land        18.14
+22                          Super Mario Bros. 3        17.28
+23                           Grand Theft Auto V        16.38
+24                  Grand Theft Auto: Vice City        16.15
+25                Pokemon Ruby/Pokemon Sapphire        15.85
+26                  Pokemon Black/Pokemon White        15.32
+27  Brain Age 2: More Training in Minutes a Day        15.30
+28                       Gran Turismo 3: A-Spec        14.98
+29               Call of Duty: Modern Warfare 3        14.76
+30      Pokémon Yellow: Special Pikachu Edition        14.64
+31                      Call of Duty: Black Ops        14.64
+32                          Pokemon X/Pokemon Y        14.35
+33                    Call of Duty: Black Ops 3        14.24
+34                   Call of Duty: Black Ops II        14.03
+35                   Call of Duty: Black Ops II        13.73
+36               Call of Duty: Modern Warfare 2        13.51
+37               Call of Duty: Modern Warfare 3        13.46
+38                         Grand Theft Auto III        13.10
+39                      Super Smash Bros. Brawl        13.04
+40                      Call of Duty: Black Ops        12.73
+41                  Animal Crossing: Wild World        12.27
+42                                 Mario Kart 7        12.21
+43                                       Halo 3        12.14
+44                           Grand Theft Auto V        11.98
+45         Pokemon HeartGold/Pokemon SoulSilver        11.90
+46                               Super Mario 64        11.89
+47                               Gran Turismo 4        11.66
+48                           Super Mario Galaxy        11.52
+49    Pokemon Omega Ruby/Pokemon Alpha Sapphire        11.33
+50           Super Mario Land 2: 6 Golden Coins        11.18
+51                          Grand Theft Auto IV        11.02
+52                                 Gran Turismo        10.95
+53                          Super Mario 3D Land        10.79
+54                               Gran Turismo 5        10.77
+55               Call of Duty: Modern Warfare 2        10.69
+56                          Grand Theft Auto IV        10.57
+57                        Super Mario All-Stars        10.55
+58            Pokemon FireRed/Pokemon LeafGreen        10.49
+59                               Super Mario 64        10.42
+60                                 Just Dance 3        10.26
+61                         Call of Duty: Ghosts        10.21</code></pre>
+</div>
+</div>
+</section>
+<section id="calculate-in-what-year-were-created-the-most-games" class="level1">
+<h1>Calculate in what year were created the most games</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>games_per_year <span class="ot">&lt;-</span> dfgame <span class="sc">%&gt;%</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>max_games_year <span class="ot">&lt;-</span> games_per_year <span class="sc">%&gt;%</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(count <span class="sc">==</span> <span class="fu">max</span>(count))</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>most_games_year <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"In year"</span>, max_games_year<span class="sc">$</span>Year, <span class="st">"were created the most games with"</span>, max_games_year<span class="sc">$</span>count, <span class="st">"games."</span>)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>most_games_year</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "In year 2009 were created the most games with 1431 games."</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizing-na_sales-over-the-years" class="level1">
+<h1>Visualizing NA_sales over the years</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfgame, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> NA_Sales)) <span class="sc">+</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"NA Sales Trend Over Years"</span>,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"NA Sales (millions)"</span>) <span class="sc">+</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="project_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="boxplot-of-global-sales-by-genre" class="level1">
+<h1>Boxplot of Global sales by Genre</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dfgame, <span class="fu">aes</span>(<span class="at">x =</span> Genre, <span class="at">y =</span> Global_Sales)) <span class="sc">+</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"lightgreen"</span>, <span class="at">color =</span> <span class="st">"purple"</span>) <span class="sc">+</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Boxplot of Global Sales by Genre"</span>, <span class="at">x =</span> <span class="st">"Genre"</span>, <span class="at">y =</span> <span class="st">"Global Sales"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="project_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="interpretation-conclusion" class="level1">
+<h1><strong><em>Interpretation / Conclusion</em></strong></h1>
+<p>This analysis reveals that:</p>
+<p><strong>1.</strong>Nintendo consistently publishes successful games, highlighting its significant role in the gaming industry.</p>
+<p><strong>2.</strong>Mario games maintain enduring popularity, significantly contributing to overall sales.</p>
+<p><strong>3.</strong>Global sales trends showcase market preferences and the dominance of top publishers, with detailed insights into regional sales distributions and genre performances.</p>
+</section>
+<section id="references" class="level1 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-videogameseurope" class="csl-entry" role="listitem">
+Europe, Video Games. 2024. <span>“Video Games Sales Data.”</span> <a href="https://www.videogameseurope.eu/data-key-facts/games-sales-data/">https://www.videogameseurope.eu/data-key-facts/games-sales-data/</a>.
+</div>
+<div id="ref-vgchartz" class="csl-entry" role="listitem">
+VGChartz. 2024. <span>“VGChartz Video Games Sales.”</span> <a href="https://www.vgchartz.com/">https://www.vgchartz.com/</a>.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
